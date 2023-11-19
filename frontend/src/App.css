@@ -36,3 +36,104 @@
     transform: rotate(360deg);
   }
 }
+/* App.css */
+
+body, html {
+  height: 100%;
+  margin: 0;
+  font-family: 'Arial', sans-serif;
+  background: #333; /* Dark background */
+  color: white; /* Light text */
+}
+
+.App {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
+
+.App-header {
+  background-color: #222; /* Darker background for the header */
+  padding: 20px;
+  border-radius: 5px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  width: 80%;
+  max-width: 600px;
+}
+
+.inputbtn {
+  background-color: #4CAF50; /* Green background */
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: background-color 0.3s ease;
+}
+
+.inputbtn:hover {
+  background-color: #45a049;
+}
+
+.info {
+  text-align: left;
+  margin-top: 20px;
+}
+
+.filesCt {
+  margin: 5px 0;
+}
+
+.IPAddress {
+  margin-top: 200px;
+  font-size: 18px; /* Adjust the size as needed */
+}
+
+
+.pdf-list h3 {
+  margin-top: 20px;
+}
+
+.pdf-list ul {
+  list-style: none;
+  padding: 0;
+}
+
+.pdf-list li {
+  margin: 10px 0;
+  background: #444; /* Slightly lighter background for list items */
+  padding: 10px;
+  border-radius: 4px;
+}
+
+.pdf-list a {
+  color: #4CAF50; /* Green text for links */
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.pdf-list a:hover {
+  color: #3e8e41;
+}
+
+.hint {
+  background-color: #36f469; /* Red background for hints */
+  color: white;
+  padding: 5px;
+  border-radius: 4px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .App-header {
+    width: 95%;
+  }
+}
