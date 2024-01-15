@@ -1,12 +1,12 @@
 import React from 'react';
-import './App.css';
-import AppContent from './AppContent';  // Importing AppContent component
-import FileView from './FileView';  // Importing AppContent component
 
+import AppContent from './views/AppContent';  // Importing AppContent component
+import TextBoxContent from './views/TextBox';
 function App() {
   return (
     <div className="App">
       <AppContent />  {/* Using AppContent component */}
+      <TextBoxContent />
     </div>
   );
 }

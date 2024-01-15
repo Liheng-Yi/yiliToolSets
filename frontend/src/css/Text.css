@@ -1,0 +1,33 @@
+.message-box {
+  width: 100%; /* or whatever width you prefer */
+  /* other styles */
+}
+
+/* Styles for messages and IP addresses */
+.message-box {
+  background-color: #1a1a1a; /* Dark background for the message box */
+  border: 1px solid #444; /* Slightly lighter border for the box */
+  color: #ddd; /* Light grey text for messages */
+  max-height: 700px; /* or any appropriate value for your layout */
+  overflow-y: auto; /* Enables vertical scrolling */
+}
+
+.message {
+  margin-bottom: 10px; /* Space between messages */
+  padding: 8px; /* Padding inside message */
+  background-color: #262626; /* Even darker background for each message */
+  border-radius: 4px; /* Rounded corners for the messages */
+  display: flex; /* Use flexbox for layout */
+  word-wrap: break-word; /* Breaks long words to prevent overflow */
+  overflow-wrap: break-word; /* Ensures the overflow text is broken into the next line */
+}
+
+/* Smaller IP address */
+.message .ip-address {
+  display: block; /* Makes the IP address appear on its own line */
+  font-size: 0.8em; /* Smaller font size for the IP address */
+  color: #888; /* Dim color for the IP address */
+  margin-bottom: 4px; /* Space between the IP address and the message text */
+}
+
+
