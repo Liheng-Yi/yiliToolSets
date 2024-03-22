@@ -67,15 +67,10 @@ function MainContent(props) {
         const formData = new FormData();
         formData.append('file', files[0]);
         // encode url incase of # in file name
-        
-        
-
         try {
             // Send the file to the server
             const response = await axios.post(`${serverURL}upload`, formData);
             console.log(response.data);
-
-
             // After uploading the file:
             setIsUploaded(true);
             setTimeout(() => {
@@ -85,6 +80,20 @@ function MainContent(props) {
 
         } catch (error) {
             console.error("Error uploading file:", error);
+        }
+    };
+    const deleteFile = async (fileName) => {
+        try {
+            const response = await axios.delete(`${serverURL}delete/${encodeURIComponent(fileName)}`);
+            console.log(response.data);
+
+            // Update the PDF list state to remove the deleted file
+            setPdfList(pdfList.filter(file => file !== fileName));
+            // Optionally, update the file count as well
+            setFileCount(currentCount => currentCount - 1);
+        } catch (error) {
+            console.error("Error deleting file:", error);
+            // Optionally, show an error message to the user
         }
     };
 
@@ -98,31 +107,33 @@ function MainContent(props) {
                     style={{ display: 'none' }} 
                     id="fileInput"
                 />
-                {/* Clickable Area */}
+                {/* Clickable Area for File Upload */}
                 <label htmlFor="fileInput" className="inputbtn">
                     发送文件
                 </label>
                 <div className="info">
-                    {isUploaded && <div className="hint">File receievd</div>}
+                    {isUploaded && <div className="hint">File received</div>}
                     <p className='filesCt'>Number of files in server: {fileCount}</p>
                 </div>
                 
+                {/* List of PDF Files with Delete Option */}
                 <div className="pdf-list">
                     <h3>Download PDF Files:</h3>
                     <ul>
                         {encodedPdfList.map((pdfFile, index) => (
                             <li key={index}>
-                                
                                 <a href={`${serverURL}saved/pdf/${pdfFile}`} target="_blank" rel="noopener noreferrer">
-                                    {pdfFile}
+                                    {decodeURIComponent(pdfFile)}
                                 </a>
+                                {/* Delete Button */}
+                                <button onClick={() => deleteFile(pdfFile)} className="delete-btn">
+                                    Delete
+                                </button>
                             </li>
                         ))}
                     </ul>
                 </div>
                 <p className='IPAddress'>Server IP Address: {serverIPAddress}<br />Your IP Address: {userIP}</p>
-
-
             </header>
         </div>
     );

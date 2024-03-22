@@ -1,6 +1,6 @@
 import React from 'react';
 
-import AppContent from './views/AppContent';  // Importing AppContent component
+import AppContent from './views/FileTransfer';  // Importing AppContent component
 import TextBoxContent from './views/TextBox';
 function App() {
   return (

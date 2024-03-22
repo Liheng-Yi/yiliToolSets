@@ -79,7 +79,7 @@ app.get('/', (req, res) => {
 
 app.get('/file-count', (req, res) => {
     const savedDir = path.join(__dirname, 'saved', 'pdf');
-    console.log(savedDir)
+    
     fs.readdir(savedDir, (err, files) => {
         if (err) {
             return res.status(500).json({ message: "Error reading directory" });
@@ -87,9 +87,8 @@ app.get('/file-count', (req, res) => {
 
         // Filter out directories and count only PDF files
         let fileCount = files.filter(file => file.endsWith('.pdf')).length;
-
+        res.json({ fileCount });
         // console.log("Here is the file count: ", fileCount);
-        // res.json({ fileCount });
     });
 });
 
@@ -125,6 +124,25 @@ app.get('/pdf-list', (req, res) => {
 
         res.json({ pdfFiles });
     });
+});
+
+app.delete('/delete/:fileName', (req, res) => {
+  const fileName = req.params.fileName;
+  const filePath = path.join(__dirname, 'saved/pdf', fileName);
+
+  fs.access(filePath, fs.constants.F_OK, (err) => {
+    if (err) {
+      return res.status(404).json({ message: "File not found" });
+    }
+
+    fs.unlink(filePath, (err) => {
+      if (err) {
+        console.error(err);
+        return res.status(500).json({ message: "Error deleting file" });
+      }
+      res.json({ message: "File deleted successfully" });
+    });
+  });
 });
 
 
