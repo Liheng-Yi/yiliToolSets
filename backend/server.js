@@ -5,15 +5,24 @@ const fs = require('fs');
 const path = require('path');
 const http = require('http');
 const socketIo = require('socket.io');
+// mangoDB
+const { MongoClient } = require('mongodb');
+const uri = "mongodb://0.0.0.0:27017"; 
+const client = new MongoClient(uri);
+
 
 const app = express();
 const PORT = process.env.PORT || 5000;
+
+
+
+
 
 // texting with socket.io
 const server = http.createServer(app);
 const io = require('socket.io')(server, {
   cors: {
-    origin: "*", // This should match your frontend URL
+    origin: "*", 
     methods: ["GET", "POST"],
     allowedHeaders: ["my-custom-header"],
     credentials: true
@@ -23,17 +32,39 @@ const io = require('socket.io')(server, {
 
 let messages = [];
 
-io.on('connection', (socket) => {
+io.on('connection', async (socket) => {
   console.log('New client connected. Socket ID:', socket.id);
 
-  // Emit the current messages to the newly connected client
-  socket.emit('loadMessages', messages);
+  const messagesCollection = client.db("message").collection("messages");
+  console.log("!!!");
 
-  socket.on('sendMessage', (message) => {
-    messages.push(message);
-    console.log(`Received message from ${socket.id}:`, message);
-    // Emit the message to all clients, including the sender
-    io.emit('messageReceived', message);
+  try {
+    // Use await to fetch the messages as an array
+    const messagesFromDb = await messagesCollection.find().toArray();
+    console.log(messagesFromDb);
+
+    // Emit the messages from the database
+    socket.emit('loadMessages', messagesFromDb);
+  } catch (err) {
+    console.error('Error retrieving messages from MongoDB', err);
+    // Emit an error event to the client if you want to handle this on the client-side
+    socket.emit('errorLoadingMessages', 'Unable to load messages');
+  }
+
+
+
+
+  socket.on('sendMessage', async (messages) => {
+    try {
+      const result = await messagesCollection.insertOne(messages);
+      if (result.acknowledged) {
+        console.log(`Message saved to MongoDB`, messages);
+        // Emit the message to all clients, including the sender
+        io.emit('messageReceived', messages);
+      }
+    } catch (error) {
+      console.error('Error saving message to MongoDB', error);
+    }
   });
 
   socket.on('disconnect', () => {
@@ -146,8 +177,16 @@ app.delete('/delete/:fileName', (req, res) => {
 });
 
 
-server.listen(PORT, '0.0.0.0', () => {
-  console.log(`WebSocket and HTTP server is running on port ${PORT}`);
+// mongo db
+server.listen(PORT, '0.0.0.0', async () => {
+  try {
+    await client.connect();
+    console.log('Connected to MongoDB');
+    console.log(`WebSocket and HTTP server is running on port ${PORT}`);
+  } catch (error) {
+    console.error('Unable to connect to MongoDB', error);
+    process.exit(1);
+  }
 });
 
 

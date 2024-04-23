@@ -50,7 +50,6 @@ function TextBoxContent(props) {
   const sendMessage = () => {
     if (message) {
       socket.emit('sendMessage', { ip: userIP, text: message });
-      console.log("sending!!!")
       setMessage('');
     }
   };
