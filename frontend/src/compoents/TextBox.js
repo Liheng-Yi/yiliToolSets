@@ -11,7 +11,6 @@ function TextBoxContent(props) {
     const [message, setMessage] = useState('');
     const [messages, setMessages] = useState([]);
     const [socket, setSocket] = useState(null);
-
     const [userIP, setUserIP] = useState('Fetching...');
     const serverURL = window.location.hostname === 'localhost' 
     ? 'http://localhost:5000/'  
