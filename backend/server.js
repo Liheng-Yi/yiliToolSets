@@ -15,9 +15,6 @@ const app = express();
 const PORT = process.env.PORT || 5000;
 
 
-
-
-
 // texting with socket.io
 const server = http.createServer(app);
 const io = require('socket.io')(server, {
@@ -28,7 +25,6 @@ const io = require('socket.io')(server, {
     credentials: true
   }
 });
-
 
 let messages = [];
 
@@ -50,9 +46,6 @@ io.on('connection', async (socket) => {
     // Emit an error event to the client if you want to handle this on the client-side
     socket.emit('errorLoadingMessages', 'Unable to load messages');
   }
-
-
-
 
   socket.on('sendMessage', async (messages) => {
     try {
@@ -95,14 +88,10 @@ const storage = multer.diskStorage({
 
 
 const upload = multer({ storage: storage });
-
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-
 app.use('/saved/pdf', express.static(path.join(__dirname, 'saved/pdf')));
-
-
 
 app.get('/', (req, res) => {
   res.json({ message: 'from the server!!!!' });
@@ -123,9 +112,7 @@ app.get('/file-count', (req, res) => {
     });
 });
 
-
 app.post('/upload', upload.single('file'), (req, res) => {
-    // You can now check req.file to see where it was saved, etc.
     // If it was an image, it should be in the ./saved/pic/ directory
     const isImage = req.file.mimetype.startsWith('image/');
     const savedDir = isImage ? path.join(__dirname, 'saved/pic') : path.join(__dirname, 'saved');
@@ -142,17 +129,13 @@ app.post('/upload', upload.single('file'), (req, res) => {
 
 // List all PDF files
 app.get('/pdf-list', (req, res) => {
-
     const pdfDir = path.join(__dirname, 'saved', 'pdf');
     fs.readdir(pdfDir, (err, files) => {
         if (err) {
             return res.status(500).json({ message: "Error reading directory" });
         }
-
         // Filter for PDF files
         const pdfFiles = files.filter(file => file.endsWith('.pdf'));
-
-
         res.json({ pdfFiles });
     });
 });
@@ -175,8 +158,6 @@ app.delete('/delete/:fileName', (req, res) => {
     });
   });
 });
-
-
 // mongo db
 server.listen(PORT, '0.0.0.0', async () => {
   try {
