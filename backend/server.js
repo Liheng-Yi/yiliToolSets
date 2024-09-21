@@ -148,7 +148,6 @@ app.delete('/delete/:fileName', (req, res) => {
     if (err) {
       return res.status(404).json({ message: "File not found" });
     }
-
     fs.unlink(filePath, (err) => {
       if (err) {
         console.error(err);
